@@ -1,0 +1,6 @@
+{
+	"name": "Use-After-Free (UAF)",
+	"type": "Vulnerability",
+	"description": "A use-after-free (UAF) vulnerability occurs when a pointer is accessed after it has already been free()'d. This can lead to undefined behavior, as the given pointer can be re-allocated and the data could change.\n\nUse-after-free()'s often occur due to a reference not being nullified after free() or improper locking (ie. race conditions). This allows an attacker to achieve memory corruption, and could lead to DoS, information disclosure, and often arbitrary code execution.",
+	"updated": "06/03/2018"
+}

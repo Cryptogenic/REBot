@@ -1,0 +1,6 @@
+{
+	"name": "Jump Oriented Programming (JOP)",
+	"type": "Exploit Technique",
+	"description": "Jump Oriented Programming (JOP) is an exploit technique used by attackers to bypass Data Execution Prevention (DEP/NX) as well as other potential mitigations such as Supervisor Mode Access Prevention (SMAP).\n\nThe idea is fundamentally similar to Return Oriented Programming (ROP), however gadgets end with a jmp instruction rather than a ret instruction. Gadgets are much more limited for JOP, as the attacker must be able to control where the gadget jmp's to, typically via a dispatch table.\n\nIt can be used in kernel exploitation to defeat anti-ROP mitigations and execute arbitrary code.",
+	"updated": "06/03/2018"
+}

@@ -1,0 +1,6 @@
+{
+	"name": "Reverse Engineering (RE)",
+	"type": "Technique",
+	"description": "Reverse Engineering (typically abbreviated to 'RE') is a technique used to figure out how a program (or function depending on the scope) works. It can involve many steps, and can be especially difficult if the software developer used anti-RE tricks such as obfuscation.\n\nReverse engineering can be approached from a number of ways, including static analysis, dynamic analysis (debugging), or a combination of both.\n\nTypically RE refers to reversing low-level assembly code such as Intel x86/x86_64, ARM, and other architectures. It can take years to master, and requires a deep understanding of how computers work at a low-level (memory, data types, etc.)",
+	"updated": "06/03/2018"
+}

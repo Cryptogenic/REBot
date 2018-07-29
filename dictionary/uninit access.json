@@ -1,0 +1,6 @@
+{
+	"name": "Uninitialized Memory Access",
+	"type": "Vulnerability",
+	"description": "An Uninitialized Memory Access vulnerability occurs when code attempts to read (or output) data that has not been initialized. It can lead to undefined behavior, as an attacker can use specialized techniques to manipulate the memory that is read by the function before it is called, and can trigger other bugs.\n\nAn example could be a pointer that isn't initialized that is used to write data. If an attacker can control this uninitialized data, they can obtain an arbitrary write primitive.\n\nIt can also be used to defeat exploit mitigations like Address Space Layout Randomization (ASLR), as the uninitialized memory that is outputted to the attacker could contain pointers that they can use to calculate where they are in memory.",
+	"updated": "06/03/2018"
+}

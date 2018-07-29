@@ -1,0 +1,6 @@
+{
+	"name": "Supervisor Mode Access Prevention (SMAP)",
+	"type": "Exploit Mitigation",
+	"description": "Supervisor Mode Access Prevention (SMAP) is a newer exploit mitigation used by operating systems (kernels) to prevent attackers from faking kernel objects in userland, and to prevent attackers from pivotting into userland memory. It is a quite effective mitigation, and while it can be bypassed if an attacker can inject and locate data in kernel memory - it can kill some exploits and makes kernel exploitation generally more difficult.\n\nIt is supported at hardware level, so it's generally not raceable, and cannot be disabled without code execution in ring0. It's often combined with Supervisor Mode Execution Prevention (SMEP).",
+	"updated": "06/03/2018"
+}

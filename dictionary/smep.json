@@ -1,0 +1,6 @@
+{
+	"name": "Supervisor Mode Execution Prevention (SMEP)",
+	"type": "Exploit Mitigation",
+	"description": "Supervisor Mode Execution Prevention (SMEP) is a newer exploit mitigation used by operating systems (kernels) that's typically used with Supervisor Mode Access Preventino (SMAP). It's intended to prevent attackers from executing code that's in userland in kernel context (ring0). It prevents the attacker from using gadgets in userland. It can be extremely effective, because if the attacker does not have a method of dumping the kernel and defeating Address Space Layout Randomization (ASLR) (should it be enabled), the attacker is blind and it's extremely difficult to achieve code execution.\n\nLike SMAP, SMEP is supported at the hardware level.",
+	"updated": "06/03/2018"
+}

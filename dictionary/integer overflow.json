@@ -1,0 +1,6 @@
+{
+	"name": "Integer Overflow",
+	"type": "Vulnerability",
+	"description": "An integer overflow vulnerability occurs when an integer is evaluated without doing proper bounds checking, or when an integer is cast to a different type (ie. unsigned to signed, etc.). It can provide more threatening primitives for an attacker, such as buffer overflows and arbitrary write primitives.\n\nWhile integer overflows are quite serious, directly they cannot be used to achieve memory corruption, and the impact is dependent on the context in which the integer is used.",
+	"updated": "06/03/2018"
+}

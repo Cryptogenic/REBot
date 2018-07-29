@@ -1,0 +1,6 @@
+{
+	"name": "Return Oriented Programming (ROP)",
+	"type": "Exploit Technique",
+	"description": "Return Oriented Programming (ROP) is an exploit technique used by attackers to bypass Data Execution Prevention (DEP/NX). It's an evolved form of ret2libc, and is very common in modern exploits. Recently, researchers are looking into ways to defeat ROP, such as Supervisor Mode Access Prevention (SMAP) for operating systems.\n\nThe strategy is essentially using the program's code against itself to execute arbitrary code.",
+	"updated": "06/03/2018"
+}

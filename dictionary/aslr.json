@@ -1,0 +1,6 @@
+{
+	"name": "Address Space Layout Randomization (ASLR)",
+	"type": "Exploit Mitigation",
+	"description": "Address Space Layout Randomization (ASLR) is an exploit mitigation with the intent of minimizing the risk that an attacker can exploit a vulnerability to achieve arbitrary code execution. Combined with NX/DEP (Data Execution Prevention), it is often a fairly effective mitigation, though not bulletproof.\n\nSometimes it requires the attacker to chain multiple bugs to compromise a system, mainly an information disclosure (commonly called 'infoleak') vulnerability combined with another vulnerability that leads to memory corruption.",
+	"updated": "06/03/2018"
+}

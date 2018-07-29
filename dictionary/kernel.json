@@ -1,0 +1,6 @@
+{
+	"name": "Kernel (ring0)",
+	"type": "Privilege Level/Mode",
+	"description": "Kernel (ring0) is often the privilege level/mode with the most privileges/access in a system, though this is not always the case, as other software such as hypervisors are considered ring-1. It can execute any instructions given to it, and can compromise the integrity of other processes and such.\n\nExecuting code in ring0 can also be used to defeat system securities such as sandboxes and jails.",
+	"updated": "06/03/2018"
+}

@@ -1,0 +1,6 @@
+{
+	"name": "Arbitrary Code Execution (RCE or LCE)",
+	"type": "Primitive",
+	"description": "Arbitrary Code Execution is the most powerful primitive that an attacker can establish via exploiting a vulnerability. It is a form of privilege escalation, and allows an attacker to execute code in an elevated state. Many mitigations are designed to prevent an attacker from achieving arbitrary code execution via exploitation, such as SMAP/SMEP, ASLR, DEP/NX, and more.\n\nRemote Code Execution (RCE) is considered the most serious type of system compromise, as the attacker can remotely execute code. Local Code Execution (often just abbreviated to 'Code Execution') is also very serious, however isn't as serious because the user already needs some sort of access to the system.",
+	"updated": "06/03/2018"
+}

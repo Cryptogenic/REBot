@@ -1,0 +1,6 @@
+{
+	"name": "Sandboxing / Jails",
+	"type": "Security Mechanism",
+	"description": "Sandboxes / Jails are used on systems to contain potential damage caused by an attacker. The idea is that even if an attacker can gain access to the filesystem via exploiting a process, their access is contained to that area, and they cannot access directories that are higher than it.\n\nIn Linux systems, it's usually implemented by setting the root vnode for the process to that of the directory, so the process is blind to anything outside it.\n\nThey're not perfect however, as sometimes the software implementing the sandbox could have vulnerabilities - these are typically referred to as 'sandbox escapes'. They can also be defeated if the attacker can escalate privileges via exploiting another process or the kernel itself.",
+	"updated": "06/03/2018"
+}

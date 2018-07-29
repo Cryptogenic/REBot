@@ -1,0 +1,6 @@
+{
+	"name": "Userland (ring3)",
+	"type": "Privilege Level/Mode",
+	"description": "Userland (ring3) is typically the mode/privilege level with the least trust in a system. Crashes that happen here (most of the time) do not bring down the entire system, and compromising a userland process does not give the attacker full, unmitigated access to the system, but only to the accessibilities of that specific process.\n\nCertain instructions (eg. instructions related to control register manipulation in x86/x86_64) cannot be executed in user mode.",
+	"updated": "06/03/2018"
+}

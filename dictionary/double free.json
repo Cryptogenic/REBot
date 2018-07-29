@@ -1,0 +1,6 @@
+{
+	"name": "Double Free",
+	"type": "Vulnerability",
+	"description": "A double free vulnerability is a variant of a use-after-free (UAF) vulnerability, and it occurs when a pointer is free()'d after it has already been free()'d. This can lead to numerous issues, including poisoning the target system's freelist, or introducing a use-after-free (UAF) on the re-allocated pointer.\n\nThey can be exploited to achieve memory corruption, DoS, and ultimately arbitrary code execution in some cases.",
+	"updated": "06/03/2018"
+}

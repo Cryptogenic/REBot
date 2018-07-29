@@ -1,0 +1,6 @@
+{
+	"name": "Race Condition",
+	"type": "Vulnerability",
+	"description": "A Race Condition vulnerability occurs when an order of events occurs in a sequence opposite of the developer's intent. It happens in environments where code is executed in parallel, and a global resource is accessed without maintaining ownership.\n\nAn example of this is if a resource is not locked when it is being processed, and another function can be called that free()'s it. If the resource is free()'d before it is completely processed, the state of the resource could change underneath the other code that's processing it, and it could be processing corrupted data.\n\nThe impact of race conditions depends on the situation, but they can sometimes be used to obtain very powerful primitives, such as arbitrary R/W or arbitrary code execution.",
+	"updated": "06/03/2018"
+}

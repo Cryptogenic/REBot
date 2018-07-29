@@ -1,0 +1,6 @@
+{
+	"name": "Data Execution Prevention (DEP) / NX (No Execute)",
+	"type": "Exploit Mitigation",
+	"description": "Data Execution Prevention (commonly called 'DEP', also known as 'NX' or 'No Execute') is an exploit mitigation that was intended to prevent attackers from writing code to memory and executing it. Combined with ASLR, it is fairly effective, however it can be bypassed by advanced exploit strategies such as Return Oriented Programming (ROP).\n\nW^X (Write XOR Execute) is also a form of DEP, which is used to ensure memory pages are not both writable and executable.",
+	"updated": "06/03/2018"
+}

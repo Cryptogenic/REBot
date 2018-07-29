@@ -1,0 +1,6 @@
+{
+	"name": "Buffer Overflow",
+	"type": "Vulnerability",
+	"description": "A buffer overflow vulnerability occurs when a user can access data outside the boundaries of a given buffer. It can lead to DoS, information disclosure, and even arbitrary code execution. Common examples of buffer overflows are when the developer allows the user to specify an arbitrary index or amount of data without validation.",
+	"updated": "06/03/2018"
+}

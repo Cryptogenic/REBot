@@ -1,0 +1,6 @@
+{
+	"name": "Arbitrary R/W (Read/Write)",
+	"type": "Primitive",
+	"description": "Arbitrary R/W is a very powerful primitive that an attacker can establish via exploiting a vulnerability. An attacker can seriously compromise a system with an arbitrary R/W primitive, as they can leak sensitive data out of memory, and ultimately achieve arbitrary code execution quite easily (such as by overwriting a function pointer).",
+	"updated": "06/03/2018"
+}
