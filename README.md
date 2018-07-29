@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://i.imgur.com/t30VQO0.png">
+</p>
+
 # REBot
 [![Release Mode](https://img.shields.io/badge/Release%20Mode-Stable-green.svg)]()  [![Maintenance](https://img.shields.io/badge/Maintained%3F-Partially-yellow.svg)]()  [![Version](https://img.shields.io/badge/Version-1.0-brightgreen.svg)]()
 
