@@ -1,9 +1,9 @@
+# REBot
+[![Release Mode](https://img.shields.io/badge/Release%20Mode-Stable-green.svg)]()  [![Maintenance](https://img.shields.io/badge/Maintained%3F-Partially-yellow.svg)]()  [![Version](https://img.shields.io/badge/Version-1.0-brightgreen.svg)]()
+
 <p align="center">
   <img src="https://i.imgur.com/t30VQO0.png">
 </p>
-
-# REBot
-[![Release Mode](https://img.shields.io/badge/Release%20Mode-Stable-green.svg)]()  [![Maintenance](https://img.shields.io/badge/Maintained%3F-Partially-yellow.svg)]()  [![Version](https://img.shields.io/badge/Version-1.0-brightgreen.svg)]()
 
 REBot is a Discord bot programmed in the Golang programming language to provide useful commands to reverse engineers and exploit developers. It provides features such as on-the-fly assembly and disassembly for common (and even less common) architectures, such as x86/64, ARM/AARCH64, PPC, and MIPS. It also provides other features such as a technical dictionary, CVE look-up, and giving tips and tricks on reverse engineering and exploit development practices.
 
