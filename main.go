@@ -14,7 +14,6 @@ import(
 type StrList []string
 
 // Globals
-var(GuildID string)
 var(DeveloperMode bool)
 var(DeveloperList StrList)
 
@@ -70,12 +69,6 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	// Don't handle nil messages, or we'll get a nil pointer dereference panic
 	if len(m.Content) <= 0 {
 		return
-	}
-
-	// We may need the guild's ID later
-	if GuildID == "" {
-		c, _ := s.State.Channel(m.ChannelID)
-		GuildID = c.GuildID
 	}
 
 	// When the first character is the command character, parse the command and pass it off to the generic command handler
