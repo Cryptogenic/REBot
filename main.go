@@ -14,6 +14,7 @@ import(
 type StrList []string
 
 // Globals
+var(GuildID string)
 var(DeveloperMode bool)
 var(DeveloperList StrList)
 
