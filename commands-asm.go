@@ -140,8 +140,8 @@ func cmdDisassemble(s *discordgo.Session, m *discordgo.MessageCreate, args []str
 	}
 	
 	// Allow some flexibility in input (ie. allow 0x, ;)
-	opcodes = strings.Replace(opcodes, ";", "")
-	opcodes = strings.Replace(opcodes, "0x", "")
+	opcodes = strings.Replace(opcodes, ";", "", -1)
+	opcodes = strings.Replace(opcodes, "0x", "", -1)
 
 	if arch, mode := parseArchitectureCapstone(asmArch); arch != 0 && mode != 0 {
 		// Output Message
