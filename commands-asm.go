@@ -103,7 +103,7 @@ func cmdAssemble(s *discordgo.Session, m *discordgo.MessageCreate, args []string
 					}
 
 					// Allow some space between the opcodes and instructions
-					outMsg += padRight(opcodes, " ", 30) + i + "\n
+					outMsg += padRight(opcodes, " ", 30) + i + "\n"
 				} else {
 					// Keystone assembler failed
 					s.ChannelMessageSend(m.ChannelID, "Could not assemble the given assembly. Are the instructions valid?")
