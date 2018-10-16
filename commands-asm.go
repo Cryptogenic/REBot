@@ -60,10 +60,10 @@ func parseArchitectureCapstone(arch string) (int, int) {
 	}
 }
 
-// Assembles the given opcodes into instructions via the given architecture
+// Assembles the given instructions into opcodes via the given architecture
 func cmdAssemble(s *discordgo.Session, m *discordgo.MessageCreate, args []string) {
 	asmArch  	 := args[1]
-	instructions := ""
+	instructions 	 := ""
 
 	// Stitch together the rest of the arguments for the instructions
 	if len(args) > 2 {
@@ -103,7 +103,7 @@ func cmdAssemble(s *discordgo.Session, m *discordgo.MessageCreate, args []string
 					}
 
 					// Allow some space between the opcodes and instructions
-					outMsg += padRight(opcodes, " ", 30) + i
+					outMsg += padRight(opcodes, " ", 30) + i + "\n
 				} else {
 					// Keystone assembler failed
 					s.ChannelMessageSend(m.ChannelID, "Could not assemble the given assembly. Are the instructions valid?")
@@ -120,14 +120,14 @@ func cmdAssemble(s *discordgo.Session, m *discordgo.MessageCreate, args []string
 		s.ChannelMessageSend(m.ChannelID, "Keystone engine is not working! :(")
 	} else {
 		supportedArchs := "```"
-		supportedArchs += "x86, x86_64/x64, arm, arm64/aarch64, ppc/ppc32, ppc64 (or ppc64be), mips/mips32, mips64 (or mips64be)"
+		supportedArchs += "x86, x86_64/x64, arm, arm64/aarch64, ppc/ppc32, ppc64, mips/mips32, mips64"
 		supportedArchs += "```"
 
 		s.ChannelMessageSend(m.ChannelID, "Architecture not supported! Supported architectures: " + supportedArchs)
 	}
 }
 
-// Disassembles the given instructions into opcodes via the architecture
+// Disassembles the given opcodes into instructions via the architecture
 func cmdDisassemble(s *discordgo.Session, m *discordgo.MessageCreate, args []string) {
 	asmArch  	 := args[1]
 	opcodes  	 := ""
@@ -138,6 +138,10 @@ func cmdDisassemble(s *discordgo.Session, m *discordgo.MessageCreate, args []str
 			opcodes += args[i]
 		}
 	}
+	
+	// Allow some flexibility in input (ie. allow 0x, ;)
+	opcodes = strings.Replace(opcodes, ";", "")
+	opcodes = strings.Replace(opcodes, "0x", "")
 
 	if arch, mode := parseArchitectureCapstone(asmArch); arch != 0 && mode != 0 {
 		// Output Message
@@ -168,7 +172,7 @@ func cmdDisassemble(s *discordgo.Session, m *discordgo.MessageCreate, args []str
 						}
 
 						// Beautify the output
-						outMsg += padRight(instructionOpCodes, " ", 30) + i.Mnemonic + " " + i.OpStr
+						outMsg += padRight(instructionOpCodes, " ", 30) + i.Mnemonic + " " + i.OpStr + "\n"
 					}
 				} else {
 					// Capstone disassembler failed
@@ -192,7 +196,7 @@ func cmdDisassemble(s *discordgo.Session, m *discordgo.MessageCreate, args []str
 		// Unsupported architecture
 
 		supportedArchs := "```"
-		supportedArchs += "x86, x86_64/x64, arm, arm64/aarch64, ppc/ppc32, ppc64 (or ppc64be), mips/mips32, mips64 (or mips64be)"
+		supportedArchs += "x86, x86_64/x64, arm, arm64/aarch64, ppc/ppc32, ppc64, mips/mips32, mips64"
 		supportedArchs += "```"
 
 		s.ChannelMessageSend(m.ChannelID, "Architecture not supported! Supported architectures: " + supportedArchs)
