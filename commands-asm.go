@@ -21,6 +21,8 @@ func parseArchitectureKeystone(arch string) (keystone.Architecture, keystone.Mod
 		return keystone.ARCH_X86, keystone.MODE_64
 	case "arm":
 		return keystone.ARCH_ARM, keystone.MODE_ARM
+	case "thumb":
+		return keystone.ARCH_ARM, keystone.MODE_THUMB
 	case "aarch64", "arm64":
 		return keystone.ARCH_ARM64, keystone.MODE_LITTLE_ENDIAN
 	case "ppc", "ppc32":
@@ -32,7 +34,7 @@ func parseArchitectureKeystone(arch string) (keystone.Architecture, keystone.Mod
 	case "mips64":
 		return keystone.ARCH_MIPS, keystone.MODE_MIPS64
 	default:
-		return 0, 0
+		return ^keystone.Architecture(0), ^keystone.Mode(0)
 	}
 }
 
@@ -45,6 +47,8 @@ func parseArchitectureCapstone(arch string) (int, int) {
 		return gapstone.CS_ARCH_X86, gapstone.CS_MODE_64
 	case "arm":
 		return gapstone.CS_ARCH_ARM, gapstone.CS_MODE_ARM
+	case "thumb":
+		return gapstone.CS_ARCH_ARM, gapstone.CS_MODE_THUMB
 	case "aarch64", "arm64":
 		return gapstone.CS_ARCH_ARM64, gapstone.CS_MODE_ARM
 	case "ppc", "ppc32":
@@ -56,7 +60,7 @@ func parseArchitectureCapstone(arch string) (int, int) {
 	case "mips64":
 		return gapstone.CS_ARCH_MIPS, gapstone.CS_MODE_MIPS64 | gapstone.CS_MODE_LITTLE_ENDIAN
 	default:
-		return 0, 0
+		return -1, -1
 	}
 }
 
@@ -72,7 +76,7 @@ func cmdAssemble(s *discordgo.Session, m *discordgo.MessageCreate, args []string
 		}
 	}
 
-	if arch, mode := parseArchitectureKeystone(asmArch); arch != 0 && mode != 0 {
+	if arch, mode := parseArchitectureKeystone(asmArch); arch != ^keystone.Architecture(0) && mode != ^keystone.Mode(0) {
 		// Output Message
 		outMsg := "Assembly: ```\n"
 
@@ -120,7 +124,7 @@ func cmdAssemble(s *discordgo.Session, m *discordgo.MessageCreate, args []string
 		s.ChannelMessageSend(m.ChannelID, "Keystone engine is not working! :(")
 	} else {
 		supportedArchs := "```"
-		supportedArchs += "x86, x86_64/x64, arm, arm64/aarch64, ppc/ppc32, ppc64, mips/mips32, mips64"
+		supportedArchs += "x86, x86_64/x64, arm, thumb, arm64/aarch64, ppc/ppc32, ppc64, mips/mips32, mips64"
 		supportedArchs += "```"
 
 		s.ChannelMessageSend(m.ChannelID, "Architecture not supported! Supported architectures: " + supportedArchs)
@@ -143,7 +147,7 @@ func cmdDisassemble(s *discordgo.Session, m *discordgo.MessageCreate, args []str
 	opcodes = strings.Replace(opcodes, ";", "", -1)
 	opcodes = strings.Replace(opcodes, "0x", "", -1)
 
-	if arch, mode := parseArchitectureCapstone(asmArch); arch != 0 && mode != 0 {
+	if arch, mode := parseArchitectureCapstone(asmArch); arch != -1 && mode != -1 {
 		// Output Message
 		outMsg := "Disassembly: ```\n"
 
@@ -196,7 +200,7 @@ func cmdDisassemble(s *discordgo.Session, m *discordgo.MessageCreate, args []str
 		// Unsupported architecture
 
 		supportedArchs := "```"
-		supportedArchs += "x86, x86_64/x64, arm, arm64/aarch64, ppc/ppc32, ppc64, mips/mips32, mips64"
+		supportedArchs += "x86, x86_64/x64, arm, thumb, arm64/aarch64, ppc/ppc32, ppc64, mips/mips32, mips64"
 		supportedArchs += "```"
 
 		s.ChannelMessageSend(m.ChannelID, "Architecture not supported! Supported architectures: " + supportedArchs)
