@@ -78,7 +78,13 @@ func cmdAssemble(s *discordgo.Session, m *discordgo.MessageCreate, args []string
 
 	if arch, mode := parseArchitectureKeystone(asmArch); arch != ^keystone.Architecture(0) && mode != ^keystone.Mode(0) {
 		// Output Message
-		outMsg := "Assembly: ```\n"
+		outMsg := "Assembly: ```x86asm\n"
+
+		// Longest instruction string, used for display padding
+		maxInstructionLength := 0
+
+		// Offset counter, used only in display output
+		offset := 0
 
 		// Split by ';' deliminator (termination character in assembly)
 		ins := strings.Split(instructions, ";")
@@ -86,6 +92,14 @@ func cmdAssemble(s *discordgo.Session, m *discordgo.MessageCreate, args []string
 		// Use the keystone library for assembly
 		if ks, err := keystone.New(arch, mode); err == nil {
 			defer ks.Close()
+
+			// Determine longest instruction for display padding
+			for _, i := range ins {
+				instructionLength := len(strings.TrimSpace(i))
+				if instructionLength > maxInstructionLength {
+					maxInstructionLength = instructionLength
+				}
+			}
 
 			// Get each instruction's opcodes individually to format nicely
 			for _, i := range ins {
@@ -106,8 +120,14 @@ func cmdAssemble(s *discordgo.Session, m *discordgo.MessageCreate, args []string
 						opcodes += padLeft(strconv.FormatInt(int64(op), 16), "0", 2) + " "
 					}
 
-					// Allow some space between the opcodes and instructions
-					outMsg += padRight(opcodes, " ", 30) + i + "\n"
+					// Beautify the output
+					outMsg += padRight(strings.TrimSpace(i), " ", maxInstructionLength) + "  ; "
+					outMsg += "+" + strconv.Itoa(offset) + " = "
+					outMsg += opcodes + "\n"
+
+					// String is always encoded as a number of hex bytes followed by a space, i.e. 3-chars
+					offset += len(opcodes) / 3
+
 				} else {
 					// Keystone assembler failed
 					s.ChannelMessageSend(m.ChannelID, "Could not assemble the given assembly. Are the instructions valid?")
@@ -149,9 +169,16 @@ func cmdDisassemble(s *discordgo.Session, m *discordgo.MessageCreate, args []str
 
 	if arch, mode := parseArchitectureCapstone(asmArch); arch != -1 && mode != -1 {
 		// Output Message
-		outMsg := "Disassembly: ```\n"
+		outMsg := "Disassembly: ```x86asm\n"
 
-		// Use the keystone library for assembly
+		// Max str lengths, used for display padding
+		maxMnemonicLength := 0
+		maxOpStrLength := 0
+
+		// Offset counter, used only in display output
+		offset := 0
+
+		// Use the gapstone library for disassembly
 		if gs, err := gapstone.New(arch, uint(mode)); err == nil {
 			defer gs.Close()
 
@@ -166,6 +193,18 @@ func cmdDisassemble(s *discordgo.Session, m *discordgo.MessageCreate, args []str
 			// We need to decode the string as capstone only accepts raw binary data for input
 			if opcodesBinary, err := hex.DecodeString(opcodes); err == nil {
 				if ins, err := gs.Disasm(opcodesBinary, 0, 0); err == nil {
+					// Find the longest strings for display padding
+					for _, i := range ins {
+						mnemonicLength := len(i.Mnemonic)
+						opStrLength := len(i.OpStr)
+						if mnemonicLength > maxMnemonicLength {
+							maxMnemonicLength = mnemonicLength
+						}
+						if opStrLength > maxOpStrLength {
+							maxOpStrLength = opStrLength
+						}
+					}
+
 					for _, i := range ins {
 						instructionOpCodes := ""
 						ops := i.Bytes
@@ -176,7 +215,12 @@ func cmdDisassemble(s *discordgo.Session, m *discordgo.MessageCreate, args []str
 						}
 
 						// Beautify the output
-						outMsg += padRight(instructionOpCodes, " ", 30) + i.Mnemonic + " " + i.OpStr + "\n"
+						outMsg += padRight(i.Mnemonic, " ", maxMnemonicLength) + " " + padRight(i.OpStr, " ", maxOpStrLength) + "  ; "
+						outMsg += "+" + strconv.Itoa(offset) + " = "
+						outMsg += instructionOpCodes + "\n"
+
+						// String is always encoded as a number of hex bytes followed by a space, i.e. 3-chars
+						offset += len(instructionOpCodes) / 3
 					}
 				} else {
 					// Capstone disassembler failed
