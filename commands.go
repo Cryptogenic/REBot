@@ -147,6 +147,13 @@ func buildCommandMap() {
 		cmdCommands,
 		false)
 
+	addCommand("motivation",
+		[]string{"motivateme"},
+		0,
+		"",
+		cmdMotivation,
+		false)
+
 	/*addCommand("readelf",
 		[]string{"elf"},
 		2,
@@ -230,9 +237,16 @@ func cmdCommands(s *discordgo.Session, m *discordgo.MessageCreate, args []string
 	commands += "!retrick - Gives you a random RE trick.\n"
 	commands += "!expltrick = Gives you a random exploit dev trick.\n"
 	commands += "!manual [architecture] - Links a PDF manual for the given architecture.\n"
-	commands += "!readelf [link] {options ...} - Reads and gives information about the ELF given by the link.\n"
+	commands += "!motivation - you can do it!"
+	//commands += "!readelf [link] {options ...} - Reads and gives information about the ELF given by the link.\n"
 	commands += "!commands/cmds - You are here.\n"
 	commands += "```"
 
 	_, _ = s.ChannelMessageSend(m.ChannelID, "Here's a list of my commands: " + commands)
+}
+
+// Motivation!
+func cmdMotivation(s *discordgo.Session, m *discordgo.MessageCreate, args []string) {
+	motivationalJapaneseFisherman := "https://www.youtube.com/watch?v=0Lq0d-cPpS4"
+	_, _ = s.ChannelMessageSend(m.ChannelID, motivationalJapaneseFisherman)
 }
