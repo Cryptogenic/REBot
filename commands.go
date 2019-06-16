@@ -77,7 +77,7 @@ func command(s *discordgo.Session, m *discordgo.MessageCreate, args []string, cm
 
 	// Ensure the required argument count is met
 	if len(args) < command.requiredArgs {
-		s.ChannelMessageSend(m.ChannelID, "Usage: !" + command.name + command.usage)
+		_, _ = s.ChannelMessageSend(m.ChannelID, "Usage: !" + command.name + " " + command.usage)
 		return
 	}
 
@@ -94,14 +94,14 @@ func buildCommandMap() {
 	addCommand("assemble",
 		[]string{"asm", "a"},
 		3,
-		"[architecture] [instructions]",
+		"[architecture] {instructions ...}",
 		cmdAssemble,
 		false)
 
 	addCommand("disassemble",
 		[]string{"disasm", "disas", "d"},
 		3,
-		"[architecture] [opcodes]",
+		"[architecture] {opcodes ...}",
 		cmdDisassemble,
 		false)
 
@@ -147,6 +147,13 @@ func buildCommandMap() {
 		cmdCommands,
 		false)
 
+	/*addCommand("readelf",
+		[]string{"elf"},
+		2,
+		"[link] {options ...}",
+		cmdReadelf,
+		false)*/
+
 	// Developer Only Commands
 
 	addCommand("devmode",
@@ -190,20 +197,42 @@ func buildCommandMap() {
 		"",
 		cmdSay,
 		true)
+
+	addCommand("uptime",
+		[]string{"up"},
+		0,
+		"",
+		cmdUptime,
+		true)
+
+	addCommand("restart",
+		[]string{"refresh"},
+		0,
+		"",
+		cmdRestart,
+		true)
+
+	addCommand("die",
+		[]string{"kill"},
+		0,
+		"",
+		cmdDie,
+		true)
 }
 
 // Sends a list of commands
 func cmdCommands(s *discordgo.Session, m *discordgo.MessageCreate, args []string) {
 	commands := "```"
-	commands += "!assemble/asm [architecture] [instructions] - Assembles given instructions into opcodes. Instructions are seperated by a ';'.\n"
-	commands += "!disassemble/disasm [architecture] [opcodes] - Disassembles given opcodes into instructions. Give in 'bb' format separated by a space.\n"
+	commands += "!assemble/asm [architecture] {instructions ...} - Assembles given instructions into opcodes. Instructions are seperated by a ';'.\n"
+	commands += "!disassemble/disasm [architecture] {opcodes ...} - Disassembles given opcodes into instructions. Give in 'bb' format separated by a space.\n"
 	commands += "!cve [cve identifier] - Displays information on a given CVE from NVD.\n"
 	commands += "!info [identifier] - Gives information on the given word (like a dictionary).\n"
 	commands += "!retrick - Gives you a random RE trick.\n"
 	commands += "!expltrick = Gives you a random exploit dev trick.\n"
 	commands += "!manual [architecture] - Links a PDF manual for the given architecture.\n"
+	commands += "!readelf [link] {options ...} - Reads and gives information about the ELF given by the link.\n"
 	commands += "!commands/cmds - You are here.\n"
 	commands += "```"
 
-	s.ChannelMessageSend(m.ChannelID, "Here's a list of my commands: " + commands)
+	_, _ = s.ChannelMessageSend(m.ChannelID, "Here's a list of my commands: " + commands)
 }

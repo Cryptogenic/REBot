@@ -1,11 +1,12 @@
 package main 
 
 import(
+	"fmt"
 	"os"
 	"os/signal"
-	"fmt"
-	"syscall"
 	"strings"
+	"syscall"
+	"time"
 
 	"github.com/bwmarrin/discordgo"
 )
@@ -14,12 +15,18 @@ import(
 type StrList []string
 
 // Globals
-var(GuildID string)
-var(DeveloperMode bool)
-var(DeveloperList StrList)
+var (
+	GuildID 		string
+	DeveloperMode 	bool
+	DeveloperList 	StrList
+	startTime 		time.Time
+)
 
 // Main entry point
 func main() {
+	// Used for calculating uptime
+	startTime = time.Now()
+
 	// Get Discord auth token from config.ini
 	botToken := getConfigPropertyAsStr("discord", "token")
 
@@ -57,7 +64,7 @@ func main() {
 	<-sc
 
 	// We're done with Discord - close the client and free resources
-	dg.Close()
+	_ = dg.Close()
 }
 
 // Handler for message events received from Discord
