@@ -7,12 +7,16 @@ import(
 )
 
 // Looks up a CVE
-func cmdCve(s *discordgo.Session, m *discordgo.MessageCreate, args []string) {
+func cmdCve(params cmdArguments) {
+	s := params.s
+	m := params.m
+	args := params.args
+
 	reqUrl := "https://nvd.nist.gov/vuln/detail/" + args[1]
 	htmlResp := getPageContents(reqUrl)
 
 	if strings.Contains(htmlResp, "Vuln ID, expected format") {
-		s.ChannelMessageSend(m.ChannelID, "CVE ID is not valid.")
+		_, _ = s.ChannelMessageSend(m.ChannelID, "CVE ID is not valid.")
 		return
 	}
 
@@ -85,13 +89,20 @@ func cmdCve(s *discordgo.Session, m *discordgo.MessageCreate, args []string) {
 		&cveMoreInfoEmbed,
 		&cveDescEmbed)
 
-	s.ChannelMessageSendEmbed(m.ChannelID, &cveEmbed)
+	_, _ = s.ChannelMessageSendEmbed(m.ChannelID, &cveEmbed)
 }
 
 // Looks up a given term in a dictionary
-func cmdInfo(s *discordgo.Session, m *discordgo.MessageCreate, args []string) {
-	// Stitch together rest of arguments for definition
+func cmdInfo(params cmdArguments) {
 	var name string
+	var item Info
+	var err error
+
+	s := params.s
+	m := params.m
+	args := params.args
+
+	// Stitch together rest of arguments for definition
 	if len(args) > 1 {
 		for i := 1; i < len(args); i++ {
 			name += args[i] + " "
@@ -100,10 +111,10 @@ func cmdInfo(s *discordgo.Session, m *discordgo.MessageCreate, args []string) {
 
 	name = strings.TrimSpace(name)
 
-	item, err := getDictionaryItem(name)
+	item, err = getDictionaryItem(name)
 
 	if err != nil {
-		s.ChannelMessageSend(m.ChannelID, "There is no information on your request.")
+		_, _ = s.ChannelMessageSend(m.ChannelID, "There is no information on your request.")
 		return
 	}
 
@@ -141,5 +152,5 @@ func cmdInfo(s *discordgo.Session, m *discordgo.MessageCreate, args []string) {
 		&infoTypeEmbed,
 		&infoDescEmbed)
 
-	s.ChannelMessageSendEmbed(m.ChannelID, &infoEmbed)
+	_, _ = s.ChannelMessageSendEmbed(m.ChannelID, &infoEmbed)
 }

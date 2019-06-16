@@ -4,8 +4,15 @@ import(
 	"github.com/bwmarrin/discordgo"
 )
 
+// Packs command arguments into one struct to avoid unused argument warnings
+type cmdArguments struct {
+	s 	 *discordgo.Session
+	m 	 *discordgo.MessageCreate
+	args []string
+}
+
 // All command handlers will use this signature for consistency
-type cmdHandler func(s *discordgo.Session, m *discordgo.MessageCreate, args []string)
+type cmdHandler func(args cmdArguments)
 
 // Represents a command - each command must have it's own unique Command object
 type Command struct {
@@ -20,39 +27,13 @@ type Command struct {
 // Stores the list of command names to Command objects
 var commandMap map[string]Command
 
-// Adds a command to the command map
-func addCommand(name string, aliases []string, requiredArgs int, usage string, handler cmdHandler, devOnly bool) {
-	cmd := Command{
-		name: name,
-		aliases: aliases,
-		requiredArgs: requiredArgs,
-		usage: usage,
-		handler: handler,
-		dev: devOnly}
-
-	commandMap[name] = cmd
-}
-
-// Search for an alias
-func searchAliases(query string, aliases []string) bool {
-	for _, alias := range aliases {
-		if alias == query {
-			return true
-		}
-	}
-
-	return false
-}
-
 // Command handler; parses the name and passes the arguments on to the correct handler
 func command(s *discordgo.Session, m *discordgo.MessageCreate, args []string, cmd string) {
 	var command Command
+	var ok bool
 
-	// Do we actually have an entry for this command?
-	command, ok := commandMap[cmd]
-
-	if !ok {
-		// Is the command given an alias?
+	// If we can't find the command, look for an alias
+	if command, ok = commandMap[cmd]; !ok {
 		foundCmd := false
 
 		for _, commandCheck := range commandMap {
@@ -69,10 +50,8 @@ func command(s *discordgo.Session, m *discordgo.MessageCreate, args []string, cm
 	}
 
 	// If it's a dev only command, check if the sender actually has permissions
-	if command.dev {
-		if !DeveloperList.contains(m.Author.ID) {
-			return
-		}
+	if command.dev && !DeveloperList.contains(m.Author.ID) {
+		return
 	}
 
 	// Ensure the required argument count is met
@@ -82,7 +61,18 @@ func command(s *discordgo.Session, m *discordgo.MessageCreate, args []string, cm
 	}
 
 	// All good, call handler
-	command.handler(s, m, args)
+	command.handler(cmdArguments{s, m, args})
+}
+
+// Search for an alias
+func searchAliases(query string, aliases []string) bool {
+	for _, alias := range aliases {
+		if alias == query {
+			return true
+		}
+	}
+
+	return false
 }
 
 // Build the command list
@@ -227,17 +217,33 @@ func buildCommandMap() {
 		true)
 }
 
+// Adds a command to the command map
+func addCommand(name string, aliases []string, requiredArgs int, usage string, handler cmdHandler, devOnly bool) {
+	cmd := Command {
+		name: name,
+		aliases: aliases,
+		requiredArgs: requiredArgs,
+		usage: usage,
+		handler: handler,
+		dev: devOnly}
+
+	commandMap[name] = cmd
+}
+
 // Sends a list of commands
-func cmdCommands(s *discordgo.Session, m *discordgo.MessageCreate, args []string) {
+func cmdCommands(params cmdArguments) {
+	s := params.s
+	m := params.m
+
 	commands := "```"
-	commands += "!assemble/asm [architecture] {instructions ...} - Assembles given instructions into opcodes. Instructions are seperated by a ';'.\n"
+	commands += "!assemble/asm [architecture] {instructions ...} - Assembles given instructions into opcodes. Instructions are separated by a ';'.\n"
 	commands += "!disassemble/disasm [architecture] {opcodes ...} - Disassembles given opcodes into instructions. Give in 'bb' format separated by a space.\n"
 	commands += "!cve [cve identifier] - Displays information on a given CVE from NVD.\n"
 	commands += "!info [identifier] - Gives information on the given word (like a dictionary).\n"
 	commands += "!retrick - Gives you a random RE trick.\n"
 	commands += "!expltrick = Gives you a random exploit dev trick.\n"
 	commands += "!manual [architecture] - Links a PDF manual for the given architecture.\n"
-	commands += "!motivation - you can do it!"
+	commands += "!motivation - you can do it!\n"
 	//commands += "!readelf [link] {options ...} - Reads and gives information about the ELF given by the link.\n"
 	commands += "!commands/cmds - You are here.\n"
 	commands += "```"
@@ -246,7 +252,10 @@ func cmdCommands(s *discordgo.Session, m *discordgo.MessageCreate, args []string
 }
 
 // Motivation!
-func cmdMotivation(s *discordgo.Session, m *discordgo.MessageCreate, args []string) {
+func cmdMotivation(params cmdArguments) {
+	s := params.s
+	m := params.m
+
 	motivationalJapaneseFisherman := "https://www.youtube.com/watch?v=0Lq0d-cPpS4"
 	_, _ = s.ChannelMessageSend(m.ChannelID, motivationalJapaneseFisherman)
 }

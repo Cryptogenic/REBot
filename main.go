@@ -24,25 +24,21 @@ var (
 
 // Main entry point
 func main() {
-	// Used for calculating uptime
-	startTime = time.Now()
+	var bot *discordgo.Session
+	var err error
 
-	// Get Discord auth token from config.ini
+	startTime = time.Now()
 	botToken := getConfigPropertyAsStr("discord", "token")
 
-	dg, err := discordgo.New("Bot " + botToken)
-
-	if err != nil {
+	if bot, err = discordgo.New("Bot " + botToken); err != nil {
 		fmt.Println("[ERROR] Critical error creating Discord session, ", err)
 		return
 	}
 
 	// Handle messageCreate events sent from Discord
-	dg.AddHandler(messageCreate)
+	bot.AddHandler(messageCreate)
 
-	err = dg.Open()
-
-	if err != nil {
+	if err = bot.Open(); err != nil {
 		fmt.Println("[ERROR] Critical error connecting to Discord, ", err)
 		return
 	}
@@ -52,7 +48,6 @@ func main() {
 	DeveloperList  = []string{"165177089035599873"} // List of discord user ID's that can access developer commands
 
 	// Build the alias maps for commands and dictionary definitions
-	// This is needed because if we don't call make() on the maps - a nil pointer dereference will occur
 	buildDictionaryMap()
 	buildCommandMap()
 
@@ -63,8 +58,8 @@ func main() {
 	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
 	<-sc
 
-	// We're done with Discord - close the client and free resources
-	_ = dg.Close()
+	// Close the client and free resources
+	_ = bot.Close()
 }
 
 // Handler for message events received from Discord
@@ -74,7 +69,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		return
 	}
 
-	// Don't handle nil messages, or we'll get a nil pointer dereference panic
+	// Don't handle nil messages
 	if len(m.Content) <= 0 {
 		return
 	}

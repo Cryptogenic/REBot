@@ -32,13 +32,13 @@ type embedField struct {
 func stribet(str string, delimLeft string, delimRight string) string {
 	// Start reading from where the first deliminator starts plus the length of the deliminator
 	posFirst := strings.Index(str, delimLeft)
+
     if posFirst == -1 {
         return ""
     }
 
     posFirst += len(delimLeft)
-
-    newStr  := str[posFirst:]
+    newStr   := str[posFirst:]
 
     // Now find the position of where the second deliminator starts
     posLast := strings.Index(newStr, delimRight)
@@ -81,6 +81,7 @@ func padRight(str string, pad string, length int) string {
 // Uses HTTP to get page contents of the given URL
 func getPageContents(url string) string {
 	resp, err := http.Get(url)
+
 	if err != nil {
 		return ""
 	}
@@ -98,6 +99,7 @@ func getPageContents(url string) string {
 // Uses HTTP to fetch page contents and write it to a file
 func downloadPageContents(filename string, url string) error {
 	resp, err := http.Get(url)
+
 	if err != nil {
 		return err
 	}
@@ -105,6 +107,7 @@ func downloadPageContents(filename string, url string) error {
 	defer resp.Body.Close()
 
 	outFile, err := os.Create(filename)
+
 	if err != nil {
 		return err
 	}

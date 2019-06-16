@@ -52,9 +52,7 @@ func getDictionaryItem(item string) (Info, error) {
 	item = strings.ToLower(item)
 
 	// Check if definition exists
-	_, ok := dictionaryMap[item]
-
-	if !ok {
+	if _, ok := dictionaryMap[item]; !ok {
 		// If definition doesn't exist, check if an alias exists
 		foundDefinition := false
 
@@ -91,7 +89,7 @@ func getDictionaryItem(item string) (Info, error) {
 
 	if err == nil {
 		return i, err
-	} else {
-		return Info{}, err
 	}
+
+	return Info{}, err
 }
