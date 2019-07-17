@@ -70,9 +70,11 @@ func cmdAssemble(params cmdArguments) {
 					}
 
 					// Beautify the output
-					outMsg += padRight(strings.TrimSpace(i), " ", maxInstructionLength) + "  ; "
-					outMsg += "+" + strconv.Itoa(offset) + " = "
-					outMsg += opcodes + "\n"
+					if opcodes != "" {
+						outMsg += padRight(strings.TrimSpace(i), " ", maxInstructionLength) + "  ; "
+						outMsg += "+" + strconv.Itoa(offset) + " = "
+						outMsg += opcodes + "\n"
+					}
 
 					// String is always encoded as a number of hex bytes followed by a space, i.e. 3-chars
 					offset += len(opcodes) / 3
