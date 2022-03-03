@@ -248,7 +248,7 @@ func cmdReTrick(params cmdArguments) {
 		"IDA: You can view functions that call a target function and functions the target function calls with View -> Open subviews -> Function calls https://i.imgur.com/bdB0Rge.png",
 		"IDA: Hit 'k' to convert 'rbp+var_xxx' format in instructions into 'rbp-xxxh'",
 		"IDA: When in Graph View, the 'Graph overview' window can be used to quickly navigate around large functions https://i.imgur.com/8IqPs1r.png",
-		"Intel x86 can be tricky, `mov rax, rax` may seem like a NOP, but it also implicitly clears the upper 32-bits of the register",
+		"Intel x86 can be tricky, `mov eax, eax` may seem like a NOP, but it also implicitly clears the upper 32-bits of the rax register",
 		"Intel x86 can be tricky, `cmpxchg` instructions implicitly modify the value of the RAX register, regardless of operands",
 		"When you see instructions that check the value of one offset from a register, then the register is set to a value from another offset in a loop - it's probably a linked list",
 	}
