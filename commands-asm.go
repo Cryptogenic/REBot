@@ -17,7 +17,7 @@ func cmdAssemble(params cmdArguments) {
 	m := params.m
 	args := params.args
 
-	asmArch  	 := args[1]
+	asmArch := args[1]
 	instructions := ""
 
 	// Stitch together the rest of the arguments for the instructions
@@ -87,7 +87,7 @@ func cmdAssemble(params cmdArguments) {
 			}
 
 			// Keystone assembler succeeded, give the user the output
-			_, _ = s.ChannelMessageSend(m.ChannelID, outMsg + "```")
+			_, _ = s.ChannelMessageSend(m.ChannelID, outMsg+"```")
 			return
 		}
 
@@ -98,7 +98,7 @@ func cmdAssemble(params cmdArguments) {
 		supportedArchs += "x86, x86_64/x64, arm, thumb, arm64/aarch64, ppc/ppc32, ppc64, mips/mips32, mips64"
 		supportedArchs += "```"
 
-		_, _ = s.ChannelMessageSend(m.ChannelID, "Architecture not supported! Supported architectures: " + supportedArchs)
+		_, _ = s.ChannelMessageSend(m.ChannelID, "Architecture not supported! Supported architectures: "+supportedArchs)
 	}
 }
 
@@ -117,7 +117,7 @@ func cmdDisassemble(params cmdArguments) {
 			opcodes += args[i]
 		}
 	}
-	
+
 	// Allow some flexibility in input (ie. allow 0x, ;)
 	opcodes = strings.Replace(opcodes, ";", "", -1)
 	opcodes = strings.Replace(opcodes, "0x", "", -1)
@@ -126,14 +126,14 @@ func cmdDisassemble(params cmdArguments) {
 		outMsg := "Disassembly: ```x86asm\n"
 
 		// Max str lengths, used for display padding
-		maxMnemonicLength 	:= 0
-		maxOpStrLength 		:= 0
+		maxMnemonicLength := 0
+		maxOpStrLength := 0
 
 		// Offset counter, used only in display output
 		offset := 0
 
 		// Use the gapstone library for disassembly
-		if gs, err := gapstone.New(arch, uint(mode)); err == nil {
+		if gs, err := gapstone.New(arch, mode); err == nil {
 			defer gs.Close()
 
 			// Use intel syntax for x86 because AT&T syntax is ugly
@@ -184,7 +184,7 @@ func cmdDisassemble(params cmdArguments) {
 				}
 
 				// Disassembler succeeded, give the user the output
-				_, _ = s.ChannelMessageSend(m.ChannelID, outMsg + "```")
+				_, _ = s.ChannelMessageSend(m.ChannelID, outMsg+"```")
 				return
 			} else {
 				// Failed to decode the string into raw binary data - must be invalid hex
@@ -200,7 +200,7 @@ func cmdDisassemble(params cmdArguments) {
 		supportedArchs += "x86, x86_64/x64, arm, thumb, arm64/aarch64, ppc/ppc32, ppc64, mips/mips32, mips64"
 		supportedArchs += "```"
 
-		_, _ = s.ChannelMessageSend(m.ChannelID, "Architecture not supported! Supported architectures: " + supportedArchs)
+		_, _ = s.ChannelMessageSend(m.ChannelID, "Architecture not supported! Supported architectures: "+supportedArchs)
 	}
 }
 
@@ -227,11 +227,11 @@ func cmdManual(params cmdArguments) {
 		supportedArchs += "x86, x86_64/x64, arm, arm64/aarch64, ppc/ppc32, ppc64, mips/mips32, mips64"
 		supportedArchs += "```"
 
-		_, _ = s.ChannelMessageSend(m.ChannelID, "Architecture not supported! Supported architectures: " + supportedArchs)
+		_, _ = s.ChannelMessageSend(m.ChannelID, "Architecture not supported! Supported architectures: "+supportedArchs)
 		return
 	}
 
-	_, _ = s.ChannelMessageSend(m.ChannelID, "Here you go: " + url)
+	_, _ = s.ChannelMessageSend(m.ChannelID, "Here you go: "+url)
 }
 
 // Gives a random reverse engineering trick
@@ -241,7 +241,7 @@ func cmdReTrick(params cmdArguments) {
 
 	rand.Seed(time.Now().Unix())
 
-	tricks := []string {
+	tricks := []string{
 		"When possible, use a debugger to trace user input in a function",
 		"Viewing strings is very helpful",
 		"IDA: IDA has a quick action dropdown to the right of the breakdown bar https://i.imgur.com/TmtXE1O.png",
@@ -265,7 +265,7 @@ func cmdExploitTrick(params cmdArguments) {
 
 	rand.Seed(time.Now().Unix())
 
-	tricks := []string {
+	tricks := []string{
 		"Use infloop gadgets in ROP chains for blind debugging",
 		"For use-after-free exploits, try empty heap spraying after code execution to stabilize the process if it's a critical object",
 		"The power of going straight from a bug to PC/IP control is overrated, other primitives like arbitrary R/W are often easier and just as powerful",
