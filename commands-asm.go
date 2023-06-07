@@ -95,7 +95,7 @@ func cmdAssemble(params cmdArguments) {
 		_, _ = s.ChannelMessageSend(m.ChannelID, "Keystone engine is not working! :(")
 	} else {
 		supportedArchs := "```"
-		supportedArchs += "x86, x86_64/x64, arm, thumb, arm64/aarch64, ppc/ppc32, ppc64, mips/mips32, mips64"
+		supportedArchs += "x86, x86_16, x86_64/x64, arm, thumb, arm64/aarch64, ppc/ppc32, ppc64, mips/mips32, mips64"
 		supportedArchs += "```"
 
 		_, _ = s.ChannelMessageSend(m.ChannelID, "Architecture not supported! Supported architectures: " + supportedArchs)
@@ -214,7 +214,7 @@ func cmdManual(params cmdArguments) {
 
 	asmArgs := args[1]
 
-	if asmArgs == "x86" || asmArgs == "x64" || asmArgs == "x86_64" || asmArgs == "x86-64" {
+	if asmArgs == "x86" || asmArgs == "x86_16" || asmArgs == "x64" || asmArgs == "x86_64" || asmArgs == "x86-64" {
 		url = "https://www.intel.com/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-software-developer-instruction-set-reference-manual-325383.pdf"
 	} else if asmArgs == "arm" || asmArgs == "aarch64" || asmArgs == "arm64" {
 		url = "https://static.docs.arm.com/ddi0487/ca/DDI0487C_a_armv8_arm.pdf"
@@ -224,7 +224,7 @@ func cmdManual(params cmdArguments) {
 		url = "https://www.cs.cmu.edu/afs/cs/academic/class/15740-f97/public/doc/mips-isa.pdf"
 	} else {
 		supportedArchs := "```"
-		supportedArchs += "x86, x86_64/x64, arm, arm64/aarch64, ppc/ppc32, ppc64, mips/mips32, mips64"
+		supportedArchs += "x86, x86_16, x86_64/x64, arm, arm64/aarch64, ppc/ppc32, ppc64, mips/mips32, mips64"
 		supportedArchs += "```"
 
 		_, _ = s.ChannelMessageSend(m.ChannelID, "Architecture not supported! Supported architectures: " + supportedArchs)
@@ -285,6 +285,8 @@ func cmdExploitTrick(params cmdArguments) {
 // Returns the proper keystone architecture based on the user input string
 func parseArchitectureKeystone(arch string) (keystone.Architecture, keystone.Mode) {
 	switch arch {
+	case "x86_16":
+		return keystone.ARCH_X86, keystone.MODE_16
 	case "x86":
 		return keystone.ARCH_X86, keystone.MODE_32
 	case "x64", "x86_64", "x86-64":
@@ -311,6 +313,8 @@ func parseArchitectureKeystone(arch string) (keystone.Architecture, keystone.Mod
 // Returns the proper capstone architecture based on the user input string
 func parseArchitectureCapstone(arch string) (int, int) {
 	switch arch {
+	case "x86_16":
+		return gapstone.CS_ARCH_X86, gapstone.CS_MODE_16
 	case "x86":
 		return gapstone.CS_ARCH_X86, gapstone.CS_MODE_32
 	case "x64", "x86_64", "x86-64":
