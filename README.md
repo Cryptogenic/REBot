@@ -59,6 +59,23 @@ For Keystone and Capstone, you may have to build the libraries yourself. Follow 
 ### Building the project
 Finally, you can build the project by simply running `go build`. You will however need to add your Discord app authentication token to the `config.ini` file - or REBot won't be able to connect to discord.
 
+## Obtaining a Discord bot token
+1. Create a bot @ [Discord Development Portal](https://discord.com/developers/applications)
+2. Ensure "Message Content Intent" is set to enabled
+3. Copy the token from the "Bot" page, and add it to `config.ini`
+4. Go to OAuth -> URL Generator
+5. Make sure "bot" is checked
+6. Give the bot appropriate permissions
+7. Copy URL and paste in browser to invite bot to server
+
+## Running REBot as a Docker container
+Discord has a limit of how many servers (unverified) bots can join. For unverified bots, the max is 100 servers. REBot is currently unverified and has maxed the number of servers it can be invited to. You can however run the following commands to self-host REBot:
+```shell
+$ git clone https://github.com/Cryptogenic/REBot.git
+$ cd REBot
+$ docker compose up -d
+```
+
 ## License
 Specter (Cryptogenic) - [@SpecterDev](https://twitter.com/SpecterDev)
 
