@@ -1,0 +1,10 @@
+version: "3"
+services:
+  rebot:
+    container_name: rebot
+    image: rebot
+    stdin_open: true
+    tty: true
+    build:
+      context: .
+      dockerfile: Dockerfile
